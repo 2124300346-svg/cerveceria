@@ -33,6 +33,12 @@
                     <td class="px-6 py-4">{{ $producto->estado }}</td>
                     <td class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center justify-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
                         <a href="{{ url('productos/' . $producto->id_producto . '/edit') }}">Editar </a></td>
+                    <td class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center justify-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
+                        <form action="{{ url('productos/' . $producto->id_producto) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Eliminar</button>
+                        </form>
                 </tr>
                 @endforeach
             </tbody>

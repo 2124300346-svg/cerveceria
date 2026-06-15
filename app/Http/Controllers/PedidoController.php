@@ -147,6 +147,29 @@ class PedidoController extends Controller
      */
     public function destroy(Pedido $pedido)
     {
-        //
+    $detalles = DetallePedido::where(
+        'id_pedido',
+        $pedido->id_pedido
+    )->get();
+
+    foreach ($detalles as $detalle) {
+
+        $presentacion = Presentacion::find(
+            $detalle->id_presentacion
+        );
+
+        $presentacion->increment(
+            'cantidad_caja',
+            $detalle->cantidad / $presentacion->cantidad_unitaria
+        );
+
+        $detalle->delete();
+    }
+
+    $pedido->delete();
+
+    return redirect()
+        ->route('pedidos.index')
+        ->with('success', 'Pedido eliminado correctamente.');
     }
 }

@@ -74,7 +74,7 @@
                         Precio por caja</label>
                 </div>
                 <a href={{ url('presentaciones') }} class="text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 font-medium rounded-base text-sm px-4 py-2.5 text-center mr-2 mb-2">Cancelar</a>
-                <button type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5">Guardar</button>
+                <button type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 rounded-base font-medium text-sm px-4 py-2.5 text-center leading-5">Guardar</button>
             </form>
      </div>
 </main>

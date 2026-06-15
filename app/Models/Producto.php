@@ -22,4 +22,9 @@ class Producto extends Model
     ];
 
     public $timestamps = false; 
+    
+    public function presentaciones()
+    {
+        return $this->hasMany(Presentacion::class, 'id_producto', 'id_producto');
+    }
 }

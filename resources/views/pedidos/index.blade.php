@@ -3,17 +3,16 @@
 @section('content')
 
     <div class="container mx-auto px-4 py-8">
-        <h2 class="text-2xl font-semibold mb-6">Crear nueva presentación</h2> 
+        <h2 class="text-2xl font-semibold mb-6">Nuevo pedido</h2> 
 
-    <a href="{{ url('presentaciones/create')}}" 
+    <a href="{{ url('pedidos/create')}}" 
        class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 
               hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
               dark:focus:ring-blue-800 font-medium rounded-base text-sm px-4 py-2.5 
               text-center leading-5">
-        Nueva Presentación
+        Nuevo pedido
     </a>
 
-    <div class="grid md:grid-cols-2 md:gap-6">
         <div class="relative z-0 w-full mb-5 group">
         <table class="w-full text-sm text-left text-gray-700 mt-10 border-t border-gray-300">
             <thead class="bg-gray-100 border-b border-gray-300">
@@ -36,7 +35,7 @@
                     <td class="px-6 py-4">{{ $pedido->fecha_pedido }}</td>
                     <td class="px-6 py-4">{{ $pedido->fecha_pago }}</td>
                     <td class="px-6 py-4">{{ $pedido->nombre_cliente }}</td>
-                    <td class="px-6 py-4">{{ $pedido->nombre_producto }}</td>
+                    <td class="px-6 py-4">{{ $pedido->producto }}</td>
                     <td class="px-6 py-4">{{ $pedido->nombre_presentacion }}</td>
                     <td class="px-6 py-4">{{ $pedido->estado_pedido }}</td>
                     <td class="px-6 py-4">{{ $pedido->monto }}</td>

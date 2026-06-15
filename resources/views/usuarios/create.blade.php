@@ -3,7 +3,7 @@
 @section('content')
  <main>
     <div class="container mx-auto px-4 py-8">
-        <h2 class="text-2xl font-semibold mb-6">Crear nuevo cliente</h2> 
+        <h2 class="text-2xl font-semibold mb-6">Crear nuevo usuario</h2> 
         
         @if ($errors->any())
 

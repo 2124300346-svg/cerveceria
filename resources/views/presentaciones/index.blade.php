@@ -19,29 +19,29 @@
             <thead class="bg-gray-100 border-b border-gray-300">
                 <tr>
                     <th scope="col" class="px-6 py-3">ID</th>
-                    <th scope="col" class="px-6 py-3">Fecha Pedido</th>
-                    <th scope="col" class="px-6 py-3">Fecha Pago</th>
-                    <th scope="col" class="px-6 py-3">Nombre Cliente</th>
-                    <th scope="col" class="px-6 py-3">Producto</th>
                     <th scope="col" class="px-6 py-3">Presentación</th>
-                    <th scope="col" class="px-6 py-3">Estado Pedido</th>
-                    <th scope="col" class="px-6 py-3">Monto</th>
+                    <th scope="col" class="px-6 py-3">Cantidad Unitaria</th>
+                    <th scope="col" class="px-6 py-3">Cantidad de cajas</th>
+                    <th scope="col" class="px-6 py-3">Precio Unitario</th>
+                    <th scope="col" class="px-6 py-3">Precio Por caja</th>
+                    <th scope="col" class="px-6 py-3">Producto</th>
+                    <th scope="col" class="px-6 py-3">Descripción</th>
                     <th scope="col" class="px-6 py-3">Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($pedidos as $pedido)
+                @foreach ($presentaciones as $presentacion)
                 <tr>
-                    <td class="px-6 py-4">{{ $pedido->id_pedido }}</td>
-                    <td class="px-6 py-4">{{ $pedido->fecha_pedido }}</td>
-                    <td class="px-6 py-4">{{ $pedido->fecha_pago }}</td>
-                    <td class="px-6 py-4">{{ $pedido->nombre_cliente }}</td>
-                    <td class="px-6 py-4">{{ $pedido->nombre_producto }}</td>
-                    <td class="px-6 py-4">{{ $pedido->nombre_presentacion }}</td>
-                    <td class="px-6 py-4">{{ $pedido->estado_pedido }}</td>
-                    <td class="px-6 py-4">{{ $pedido->monto }}</td>
+                    <td class="px-6 py-4">{{ $presentacion->id_presentacion }}</td>
+                    <td class="px-6 py-4">{{ $presentacion->nombre_presentacion }}</td>
+                    <td class="px-6 py-4">{{ $presentacion->cantidad_unitaria }}</td>
+                    <td class="px-6 py-4">{{ $presentacion->cantidad_caja }}</td>
+                    <td class="px-6 py-4">{{ $presentacion->precio_unidad }}</td>
+                    <td class="px-6 py-4">{{ $presentacion->precio_caja }}</td>
+                    <td class="px-6 py-4">{{ $presentacion->nombre_producto }}</td>
+                    <td class="px-6 py-4">{{ $presentacion->descripcion }}</td>
                     <td class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
-                        <a href="{{ url('pedidos/' . $pedido->id_pedido . '/edit') }}">Editar </a></td>
+                        <a href="{{ url('presentaciones/' . $presentacion->id_presentacion . '/edit') }}">Editar </a></td>
                 </tr>
                 @endforeach
             </tbody>

@@ -4,15 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.css" rel="stylesheet">
-    <title>Document</title>
-</head>
+    <title>Cerveceria</title>
 
 <body>
 
@@ -72,6 +64,31 @@
         </div>
     </nav>
 
+    <div class="bg-neutral-secondary-soft py-4">
+        <div class="max-w-screen-xl mx-auto px-4">
+
+            <div>
+                <h3 class="font-bold text-blue-800">Ubicacion</h3>
+                <p id="ciudad">Ciudad: Cargando...</p>
+                <p id="estado">Estado: Cargando...</p>
+                <p id="pais">País: Cargando...</p>
+            </div>
+            
+
+            <div>
+                <h3 class="font-bold text-blue-800">Clima</h3>
+                <p id="temperatura">Temperatura: Cargando...</p>
+                <p id="humedad">Humedad: Cargando...</p>
+                <p id="lluvia">Lluvia: Cargando...</p>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-yellow-800">Tipo de cambio</h3>
+                <p id=dolar>1 USD = Cargando...</p>
+            </div>
+        </div>
+    </div>
+
     <main>
         @yield('content')
     </main>
@@ -80,5 +97,64 @@
         &copy; 2024 Grupo Modelo. Todos los derechos reservados.
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script>
+        async function cargarInformacion(){
+            try {
+                navigator.geolocation.getCurrentPosition(async function(position){
+
+                    let lat = position.coords.latitude;
+                    let lon = position.coords.longitude;
+
+                    console.log("Lat: ", lat);
+                    console.log("Lon: ", lon);
+
+                    let geoResponse =await fetch(
+                        `http://api.positionstack.com/v1/reverse?access_key=a391f77472ed58b67d5c3289874986cd&query=${lat},${lon}`
+                    );
+
+                    let geoData = await geoResponse.json();
+                    let lugar = geoData.data[0];
+                    console.log(lugar);
+
+                    document.getElementById('ciudad').innerHTML=
+                    'Ciudad: ' + (lugar.locality||lugar.label||lugar.country||'No disponible');
+
+                    document.getElementById('estado').innerHTML=
+                    'Estado: ' + lugar.region;
+
+                    document.getElementById('pais').innerHTML=
+                    'País: ' + lugar.country;
+
+                    let climaResponse = await fetch(
+                        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=34445d6d99f24a29509d1ef40e50eae5&units=metric&lang=es`
+                    );
+
+                    let clima = await climaResponse.json();
+
+                    document.getElementById('temperatura').innerHTML =
+                    "Temperatura: " + clima.main.temp + " °C";
+
+                    document.getElementById('humedad').innerHTML =
+                    "Humedad: " + clima.main.humidity + "%";
+
+                    document.getElementById('lluvia').innerHTML =
+                    "Condicion " + clima.weather[0].description;
+                });
+
+                let cambioResponse = await fetch(
+                    'https://open.er-api.com/v6/latest/USD'
+                );
+
+                let cambio = await cambioResponse.json();
+
+                document.getElementById('dolar').innerHTML =
+                "1 USD = "+ cambio.rates.MXN.toFixed(2)+"MXN";
+            }
+            catch(error){
+                console.log(error);
+            }
+        }
+        cargarInformacion();
+    </script>
 </body>
 </html>

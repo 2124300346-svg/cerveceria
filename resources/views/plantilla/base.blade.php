@@ -80,7 +80,6 @@
                 <p id="temperatura">Temperatura: Cargando...</p>
                 <p id="humedad">Humedad: Cargando...</p>
                 <p id="lluvia">Lluvia: Cargando...</p>
-                <p>prueba</p>
             </div>
 
             <div>

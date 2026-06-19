@@ -40,13 +40,25 @@ class UsuarioController extends Controller
             'contrasena' => 'required|string|min:8',
             'repetir_contrasena' => 'required|string|min:8|same:contrasena',
             'fecha_Nac' => 'required|date|before:18 years ago',
-            'img1_usuario' => 'nullable|image|max:2048', // Validación para la imagen
+            'img1_usu' => 'nullable|image|max:2048', // Validación para la imagen
         ]);
 
-        if ($request->hasFile('img1_usuario')) {
-            $validated['img1_usuario'] = $request->file('img1_usuario')->store('usuario', 'public');
+        $validated['img1_usu'] = 'imagenes/usuarios/default.jpg';
+
+        $usuario=Usuario::create($validated);
+
+        if($request->hasFile('img1_usu')){
+            $archivo=$request->file('img1_usu');
+
+            $nombre='usuario_'.$usuario->id_usuario.'.'.
+            $archivo->getClientOriginalExtension();
+
+            $archivo->move(public_path('imagenes/usuarios'), $nombre);
+
+            $usuario->img1_usu='imagenes/usuarios/' . $nombre;
+
+            $usuario->save();
         }
-        Usuario::create($validated);
 
         return redirect()->route('usuarios.index')->with('success', 'Usuario creado exitosamente.');
     }
@@ -86,13 +98,13 @@ class UsuarioController extends Controller
         'contrasena' => 'nullable|string|min:8',
         'repetir_contrasena' => 'nullable|string|min:8|same:contrasena',
         'fecha_Nac' => 'required|date|before:18 years ago',
-        'img1_usuario' => 'nullable|image|max:2048',
+        'img1_usu' => 'nullable|image|max:2048',
     ]);
 
     $usuario = Usuario::findOrFail($id_usuario);
 
-    if ($request->hasFile('img1_usuario')) {
-        $validated['img1_usuario'] = $request->file('img1_usuario')->store('usuario', 'public');
+    if ($request->hasFile('img1_usu')) {
+        $validated['img1_usu'] = $request->file('img1_usu')->store('usuario', 'public');
     }
     
     $usuario->update($validated);
@@ -105,7 +117,11 @@ class UsuarioController extends Controller
      */
     public function destroy(Usuario $usuario)
     {
-        $usuario->delete();
-        return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado exitosamente.');
+        $usuario->estado='inactivo';
+        $usuario->save();
+
+        return redirect()
+        ->route('usuarios.index')
+        ->with('success', 'Usuario eliminado exitosamente.');
     }
 }

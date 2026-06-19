@@ -79,7 +79,7 @@
                 <h3 class="font-bold text-blue-800">Clima</h3>
                 <p id="temperatura">Temperatura: Cargando...</p>
                 <p id="humedad">Humedad: Cargando...</p>
-                <p id="lluvia">Lluvia: Cargando...</p>
+                <p id="lluvia">Condicion: Cargando...</p>
             </div>
 
             <div>

@@ -24,7 +24,7 @@ class Usuario extends Model
         'fecha_Nac',
         'num_ss',
         'estado',
-        'img1_usuario'
+        'img1_usu'
     ];
 
     public $timestamps = false;

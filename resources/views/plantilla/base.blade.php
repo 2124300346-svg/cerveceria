@@ -98,63 +98,67 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script>
-        async function cargarInformacion(){
-            try {
-                navigator.geolocation.getCurrentPosition(async function(position){
+async function cargarInformacion(){
+    try {
 
-                    let lat = position.coords.latitude;
-                    let lon = position.coords.longitude;
+        navigator.geolocation.getCurrentPosition(async function(position){
 
-                    console.log("Lat: ", lat);
-                    console.log("Lon: ", lon);
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
 
-                    let geoResponse =await fetch(
-                        `http://api.positionstack.com/v1/reverse?access_key=a391f77472ed58b67d5c3289874986cd&query=${lat},${lon}`
-                    );
+            console.log("Lat: ", lat);
+            console.log("Lon: ", lon);
 
-                    let geoData = await geoResponse.json();
-                    let lugar = geoData.data[0];
-                    console.log(lugar);
+            let geoResponse = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+            );
 
-                    document.getElementById('ciudad').innerHTML=
-                    'Ciudad: ' + (lugar.locality||lugar.label||lugar.country||'No disponible');
+            let geoData = await geoResponse.json();
 
-                    document.getElementById('estado').innerHTML=
-                    'Estado: ' + lugar.region;
+            document.getElementById('ciudad').innerHTML =
+                'Ciudad: ' +
+                (geoData.address.city ||
+                 geoData.address.town ||
+                 geoData.address.village ||
+                 'No disponible');
 
-                    document.getElementById('pais').innerHTML=
-                    'País: ' + lugar.country;
+            document.getElementById('estado').innerHTML =
+                'Estado: ' + geoData.address.state;
 
-                    let climaResponse = await fetch(
-                        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=34445d6d99f24a29509d1ef40e50eae5&units=metric&lang=es`
-                    );
+            document.getElementById('pais').innerHTML =
+                'País: ' + geoData.address.country;
 
-                    let clima = await climaResponse.json();
+            let climaResponse = await fetch(
+                `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=34445d6d99f24a29509d1ef40e50eae5&units=metric&lang=es`
+            );
 
-                    document.getElementById('temperatura').innerHTML =
-                    "Temperatura: " + clima.main.temp + " °C";
+            let clima = await climaResponse.json();
 
-                    document.getElementById('humedad').innerHTML =
-                    "Humedad: " + clima.main.humidity + "%";
+            document.getElementById('temperatura').innerHTML =
+                "Temperatura: " + clima.main.temp + " °C";
 
-                    document.getElementById('lluvia').innerHTML =
-                    "Condicion " + clima.weather[0].description;
-                });
+            document.getElementById('humedad').innerHTML =
+                "Humedad: " + clima.main.humidity + "%";
 
-                let cambioResponse = await fetch(
-                    'https://open.er-api.com/v6/latest/USD'
-                );
+            document.getElementById('lluvia').innerHTML =
+                "Condicion: " + clima.weather[0].description;
+        });
 
-                let cambio = await cambioResponse.json();
+        let cambioResponse = await fetch(
+            'https://open.er-api.com/v6/latest/USD'
+        );
 
-                document.getElementById('dolar').innerHTML =
-                "1 USD = "+ cambio.rates.MXN.toFixed(2)+"MXN";
-            }
-            catch(error){
-                console.log(error);
-            }
-        }
-        cargarInformacion();
-    </script>
+        let cambio = await cambioResponse.json();
+
+        document.getElementById('dolar').innerHTML =
+            "1 USD = " + cambio.rates.MXN.toFixed(2) + " MXN";
+
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+cargarInformacion();
+</script>
 </body>
 </html>

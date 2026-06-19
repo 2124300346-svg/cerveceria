@@ -31,6 +31,7 @@
                         <option value="usuario">Usuario</option>
                         <option value="distribuidor">Distribuidor</option>
                         <option value="administrador">Administrador</option>
+                        <option value="empleado">Empleado</option>
                     </select>
                 </div>
                 <div class="grid md:grid-cols-2 md:gap-6">

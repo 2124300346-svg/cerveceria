@@ -38,17 +38,27 @@ class ClienteController extends Controller
             'contrasena' => 'required|string|min:8',
             'repetir_contrasena' => 'required|string|min:8|same:contrasena',
             'fecha_Nac' => 'required|date|before:18 years ago',
-            'img_cliente' => 'nullable|image|max:2048', // Validación para la imagen
+            'img_cliente' => 'nullable|image|max:2048',
         ]);
+        $validated['img_cliente'] = 'imagenes/clientes/default.jpg';
 
-        if ($request->hasFile('img_cliente')) {
-            $validated['img_cliente'] = $request->file('img_cliente')->store('cliente', 'public');
+        $cliente=Cliente::create($validated);
+
+        if($request->hasFile('img_cliente')){
+            $archivo=$request->file('img_cliente');
+
+            $nombre='cliente_'.$cliente->id_cliente.'.'.
+            $archivo->getClientOriginalExtension();
+
+            $archivo->move(public_path('imagenes/clientes'), $nombre);
+
+            $cliente->img_cliente='imagenes/clientes/' . $nombre;
+
+            $cliente->save();
         }
-        Cliente::create($validated);
 
-        return redirect()->route('clientes.index')->with('success', 'Cliente creado exitosamente.');
+        return redirect()->route('clientes.index')->with('success', 'cliente creado exitosamente.');
     }
-
     /**
      * Display the specified resource.
      */
@@ -85,12 +95,25 @@ class ClienteController extends Controller
 
         $cliente = Cliente::find($id_cliente);
 
-        if($request->hasFile('img_cliente')) {
-            $validated['img_cliente'] = $request->file('img_cliente')->store('cliente', 'public');
-        }
+        if ($request->hasFile('img_cliente')) {
 
-        $cliente->update($validated);
-        return redirect()->route('clientes.index')->with('success', 'Cliente actualizado exitosamente.');
+        $archivo = $request->file('img_cliente');
+
+        $nombre = 'cliente_' . $cliente->id_cliente . '.' .
+                  $archivo->getClientOriginalExtension();
+
+        $archivo->move(public_path('imagenes/clientes'), $nombre);
+
+        $validated['img_cliente'] = 'imagenes/clientes/' . $nombre;
+
+    } else {
+
+        $validated['img_cliente'] = $cliente->img_cliente;
+    }
+
+    $cliente->update($validated);
+
+    return redirect()->route('clientes.index')->with('success', 'Cliente actualizado exitosamente.');
     }
 
     /**
@@ -98,9 +121,11 @@ class ClienteController extends Controller
      */
     public function destroy(Cliente $cliente)
     {
-        $cliente = Cliente::find($cliente->id_cliente);
-        $cliente->delete();
-        
-        return redirect()->route('clientes.index')->with('success', 'Cliente eliminado exitosamente.');
+        $cliente->estado='inactivo';
+        $cliente->save();
+
+        return redirect()
+        ->route('clientes.index')
+        ->with('success', 'Usuario eliminado exitosamente.');
     }
 }

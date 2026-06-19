@@ -22,7 +22,7 @@
 
         @endif
 
-            <form action="{{ route('clientes.store') }}" method="POST" class="max-w-md mx-auto">
+            <form action="{{ route('clientes.store') }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto">
                 @csrf
                 <div class="grid md:grid-cols-2 md:gap-6">
                     <div class="relative z-0 w-full mb-5 group">
@@ -78,7 +78,7 @@
                     </label>
                 </div>
                 <div class="relative z-0 w-full mb-5 group">
-                    <input type="file" name="img_cliente" id="img_cliente" value="{{ old('img_cliente') }}"
+                    <input type="file" name="img_cliente" id="img_cliente"
                     class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium peer"/>
                     <label for="img_cliente"
                     class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">

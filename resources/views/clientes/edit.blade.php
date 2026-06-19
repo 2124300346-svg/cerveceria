@@ -22,7 +22,7 @@
 
         @endif
 
-            <form action="{{ url('clientes/'.$cliente->id_cliente) }}" method="POST" class="max-w-md mx-auto">
+            <form action="{{ url('clientes/'.$cliente->id_cliente) }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto">
                 @method('PUT')
                 @csrf
                 <div class="grid md:grid-cols-2 md:gap-6">

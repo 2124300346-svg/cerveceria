@@ -22,11 +22,11 @@
 
         @endif
 
-            <form action="{{ url('usuarios/'.$usuario->id_usuario) }}" method="POST" class="max-w-md mx-auto">
+            <form action="{{ url('usuarios/'.$usuario->id_usuario) }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto">
                 @method('PUT')
                 @csrf
                 <div class="relative z-0 w-full mb-5 group">
-                    <select name="puesto" id="puesto" value="{{ $usuario->puesto }}" required
+                    <select name="puesto" id="puesto" value="{{ $usuario->puesto }}"
                         class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer">
                         <option value="" disabled selected>Seleccione un puesto</option>
                         <option value="usuario">Usuario</option>
@@ -75,12 +75,12 @@
                     </div>
                 <div class="grid md:grid-cols-2 md:gap-6">
                 <div class="relative z-0 w-full mb-5 group">
-                    <input type="password" name="contrasena" id="contrasena"
+                    <input type="password" name="contrasena" id="contrasena" value="{{$usuario->contraseña}}"
                     class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " />
                     <label for="contrasena" class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Contraseña</label>
                 </div>
                 <div class="relative z-0 w-full mb-5 group">
-                    <input type="password" name="repetir_contrasena" id="repetir_contrasena" 
+                    <input type="password" name="repetir_contrasena" id="repetir_contrasena" value="{{$usuario->contraseña}}"
                     class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " />
                     <label for="repetir_contrasena" class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Confirmar contraseña</label>
                 </div>
@@ -95,11 +95,11 @@
                     </label>
                 </div>
                 <div class="relative z-0 w-full mb-5 group">
-                    <input type="file" name="img_cliente" id="img_cliente" value="{{ $usuario->img_cliente }}"
+                    <input type="file" name="img1_usu" id="img1_usu"
                     class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium peer"/>
-                    <label for="img_cliente"
+                    <label for="img1_usu"
                     class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Imagen Cliente
+                    Imagen usuario
                     </label>
                 </div>
                 <a href={{ url('usuarios') }} class="text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 font-medium rounded-base text-sm px-4 py-2.5 text-center mr-2 mb-2">Cancelar</a>

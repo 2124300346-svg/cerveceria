@@ -40,7 +40,7 @@ class UsuarioController extends Controller
             'contrasena' => 'required|string|min:8',
             'repetir_contrasena' => 'required|string|min:8|same:contrasena',
             'fecha_Nac' => 'required|date|before:18 years ago',
-            'img1_usu' => 'nullable|image|max:2048', // Validación para la imagen
+            'img1_usu' => 'nullable|image|max:2048', 
         ]);
 
         $validated['img1_usu'] = 'imagenes/usuarios/default.jpg';
@@ -85,7 +85,7 @@ class UsuarioController extends Controller
      */
     public function update(Request $request, $id_usuario)
 {
-    $usuario = Usuario::find($id_usuario);
+    $usuario = Usuario::findOrFail($id_usuario);
 
     $validated = $request->validate([
         'puesto' => 'required|string|in:usuario,distribuidor,administrador',
@@ -93,20 +93,30 @@ class UsuarioController extends Controller
         'direccion' => 'required|string|max:100',
         'telefono' => 'required|numeric|digits:10',
         'rfc' => 'nullable|string|min:13|max:13|unique:usuario,rfc,' . $usuario->id_usuario . ',id_usuario',
-        'correo' => 'nullable|email|max:255|unique:usuario,correo,' . $id_usuario . ',id_usuario',
-        'num_ss' => 'nullable|numeric|digits:11|unique:usuario,num_ss,' . $id_usuario . ',id_usuario',
+        'correo' => 'nullable|email|max:255|unique:usuario,correo,' . $usuario->id_usuario . ',id_usuario',
+        'num_ss' => 'nullable|numeric|digits:11|unique:usuario,num_ss,' . $usuario->id_usuario . ',id_usuario',
         'contrasena' => 'nullable|string|min:8',
         'repetir_contrasena' => 'nullable|string|min:8|same:contrasena',
         'fecha_Nac' => 'required|date|before:18 years ago',
         'img1_usu' => 'nullable|image|max:2048',
     ]);
 
-    $usuario = Usuario::findOrFail($id_usuario);
-
     if ($request->hasFile('img1_usu')) {
-        $validated['img1_usu'] = $request->file('img1_usu')->store('usuario', 'public');
+
+        $archivo = $request->file('img1_usu');
+
+        $nombre = 'usuario_' . $usuario->id_usuario . '.' .
+                  $archivo->getClientOriginalExtension();
+
+        $archivo->move(public_path('imagenes/usuarios'), $nombre);
+
+        $validated['img1_usu'] = 'imagenes/usuarios/' . $nombre;
+
+    } else {
+
+        $validated['img1_usu'] = $usuario->img1_usu;
     }
-    
+
     $usuario->update($validated);
 
     return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado exitosamente.');

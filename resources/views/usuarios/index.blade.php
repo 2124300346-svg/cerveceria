@@ -41,6 +41,7 @@
                     </td>
                     <td class="px-6 py-4">{{ $usuario->puesto }}</td>
                     <td class="px-6 py-4">{{ $usuario->nombre_usuario }}</td>
+                    <td class="px-6 py-4">{{ $usuario->estado}}</td>
                     <td class="px-6 py-4">{{ $usuario->direccion }}</td>
                     <td class="px-6 py-4">{{ $usuario->telefono }}</td>
                     <td class="px-6 py-4">{{ $usuario->rfc }}</td>

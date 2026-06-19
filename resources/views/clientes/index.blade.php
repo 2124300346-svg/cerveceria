@@ -19,7 +19,9 @@
             <thead class="bg-gray-100 border-b border-gray-300">
                 <tr>
                     <th scope="col" class="px-6 py-3">ID</th>
+                    <th scope="col" class="px-6 py-3">Foto</th>
                     <th scope="col" class="px-6 py-3">Nombre</th>
+                    <th scope="col" class="px-6 py-3">Estado</th>
                     <th scope="col" class="px-6 py-3">Dirección</th>
                     <th scope="col" class="px-6 py-3">Teléfono</th>
                     <th scope="col" class="px-6 py-3">RFC</th>
@@ -33,7 +35,11 @@
                 @foreach ($clientes as $cliente)
                 <tr>
                     <td class="px-6 py-4">{{ $cliente->id_cliente }}</td>
+                    <td>
+                    <img src="{{ asset($cliente->img_cliente)}}" width="80">
+                    </td>
                     <td class="px-6 py-4">{{ $cliente->nombre_cliente }}</td>
+                    <td class="px-6 py-4">{{ $cliente->estado}}</td>
                     <td class="px-6 py-4">{{ $cliente->direccion }}</td>
                     <td class="px-6 py-4">{{ $cliente->telefono }}</td>
                     <td class="px-6 py-4">{{ $cliente->rfc }}</td>

@@ -22,7 +22,7 @@
 
         @endif
 
-            <form action="{{ route('productos.store') }}" method="POST" class="max-w-md mx-auto">
+            <form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto">
                 @csrf
 
                     <div class="relative z-0 w-full mb-5 group">
@@ -40,7 +40,7 @@
                         Descripción</label>
                     </div>
                     <div class="relative z-0 w-full mb-5 group">
-                        <input type="file" name="img1_pr" id="img1_pr" value="{{ old('img1_pr') }}"
+                        <input type="file" name="img1_pr" id="img1_pr"
                         class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium peer"/>
                         <label for="img1_pr"
                         class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -48,7 +48,7 @@
                         </label>
                     </div>
                     <div class="relative z-0 w-full mb-5 group">
-                        <input type="file" name="img2_pr" id="img2_pr" value="{{ old('img2_pr') }}"
+                        <input type="file" name="img2_pr" id="img2_pr"
                         class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium peer"/>
                         <label for="img2_pr"
                         class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -56,7 +56,7 @@
                         </label>
                     </div>
                     <div class="relative z-0 w-full mb-5 group">
-                        <input type="file" name="img3_pr" id="img3_pr" value="{{ old('img3_pr') }}"
+                        <input type="file" name="img3_pr" id="img3_pr"
                         class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium peer"/>
                         <label for="img3_pr"
                         class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">

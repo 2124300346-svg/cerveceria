@@ -28,6 +28,15 @@
                 @foreach ($productos as $producto)
                 <tr>
                     <td class="px-6 py-4">{{ $producto->id_producto }}</td>
+                    <td>
+                        <img src="{{ asset($producto->img1_pr)}}" width="80">
+                    </td>
+                    <td>
+                        <img src="{{ asset($producto->img2_pr)}}" width="80">
+                    </td>
+                    <td>
+                        <img src="{{ asset($producto->img3_pr)}}" width="80">
+                    </td>
                     <td class="px-6 py-4">{{ $producto->nombre }}</td>
                     <td class="px-6 py-4">{{ $producto->descripcion }}</td>
                     <td class="px-6 py-4">{{ $producto->estado }}</td>

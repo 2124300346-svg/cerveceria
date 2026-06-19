@@ -31,23 +31,56 @@ class PedidoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'id_cliente' => 'required|exists:cliente,id_cliente',
-            'fecha_pedido' => 'required|date',
-            'estado' => 'required|string',
-            'productos' => 'required|array',
-            'productos.*.id_producto' => 'required|exists:producto,id_producto',
-            'productos.*.id_presentacion' => 'required|exists:presentacion,id_presentacion',
-            'productos.*.cantidad_caja' => 'required',
-        ]);
+ * Store a newly created resource in storage.
+ */
+public function store(Request $request)
+{
+    $data = $request->validate([
+        'id_cliente' => 'required|exists:cliente,id_cliente',
+        'fecha_pedido' => 'required|date',
+        'estado' => 'required|string',
+        'productos' => 'required|array',
+        'productos.*.id_producto' => 'required|exists:producto,id_producto',
+        'productos.*.id_presentacion' => 'required|exists:presentacion,id_presentacion',
+        'productos.*.cantidad_caja' => 'required',
+    ]);
 
-        foreach ($data['productos'] as $prod) {
+    $cliente = Cliente::find($data['id_cliente']);
+
+    if ($cliente->estado != 'activo') {
+
+        return back()
+            ->withInput()
+            ->withErrors([
+                'cliente' => 'El cliente seleccionado está inactivo.'
+            ]);
+    }
+
+    foreach ($data['productos'] as $prod) {
+
+        $producto = Producto::find($prod['id_producto']);
+
+        if ($producto->estado != 'activo') {
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'producto' => 'El producto "' . $producto->nombre . '" está inactivo.'
+                ]);
+        }
 
         $presentacion = Presentacion::find($prod['id_presentacion']);
+
+        if ($presentacion->estado != 'activo') {
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'presentacion' => 'La presentación "' .
+                    $presentacion->nombre_presentacion .
+                    '" está inactiva.'
+                ]);
+        }
 
         if ($presentacion->cantidad_caja < $prod['cantidad_caja']) {
 
@@ -62,39 +95,39 @@ class PedidoController extends Controller
         }
     }
 
-        $pedido = Pedido::create([
-            'id_cliente' => $data['id_cliente'],
-            'fecha_pedido' => $data['fecha_pedido'],
-            'estado' => $data['estado'],
-            'fecha_pago' => $data['estado'] === 'pagado'
-             ? now()
-             : null,
-        ]);
-
-        foreach ($data['productos'] as $prod) {
-
-    $presentacion = Presentacion::find($prod['id_presentacion']);
-
-    DetallePedido::create([
-        'id_pedido' => $pedido->id_pedido,
-        'id_producto' => $prod['id_producto'],
-        'id_presentacion' => $prod['id_presentacion'],
-
-        'cantidad' =>
-            $prod['cantidad_caja']
-            * $presentacion->cantidad_unitaria,
-
-        'monto' =>
-            $prod['cantidad_caja']
-            * $presentacion->precio_caja,
+    $pedido = Pedido::create([
+        'id_cliente' => $data['id_cliente'],
+        'fecha_pedido' => $data['fecha_pedido'],
+        'estado' => $data['estado'],
+        'fecha_pago' => $data['estado'] === 'pagado'
+            ? now()
+            : null,
     ]);
 
-     $presentacion->decrement('cantidad_caja', $prod['cantidad_caja']);
+    Cliente::where('id_cliente', $data['id_cliente'])
+        ->increment('num_pedidos');
 
-        }
+    foreach ($data['productos'] as $prod) {
 
-        return redirect()->route('pedidos.index')->with('success', 'Pedido creado exitosamente.');
-    }   
+        $presentacion = Presentacion::find($prod['id_presentacion']);
+
+        DetallePedido::create([
+            'id_pedido' => $pedido->id_pedido,
+            'id_producto' => $prod['id_producto'],
+            'id_presentacion' => $prod['id_presentacion'],
+            'cantidad' =>
+                $prod['cantidad_caja']
+                * $presentacion->cantidad_unitaria,
+            'monto' =>
+                $prod['cantidad_caja']
+                * $presentacion->precio_caja,
+        ]);
+
+        $presentacion->decrement('cantidad_caja', $prod['cantidad_caja']);
+    }
+
+    return redirect()->route('pedidos.index')->with('success', 'Pedido creado exitosamente.');
+    }
   
 
     /**
@@ -147,29 +180,40 @@ class PedidoController extends Controller
      */
     public function destroy(Pedido $pedido)
     {
-    $detalles = DetallePedido::where(
-        'id_pedido',
-        $pedido->id_pedido
-    )->get();
+        if ($pedido->estado == 'cancelado') {
 
-    foreach ($detalles as $detalle) {
+            return redirect()
+                ->route('pedidos.index')
+                ->with('error', 'El pedido ya estaba cancelado.');
+        }
 
-        $presentacion = Presentacion::find(
-            $detalle->id_presentacion
-        );
+        $detalles = DetallePedido::where(
+            'id_pedido',
+            $pedido->id_pedido
+        )->get();
 
-        $presentacion->increment(
-            'cantidad_caja',
-            $detalle->cantidad / $presentacion->cantidad_unitaria
-        );
+        foreach ($detalles as $detalle) {
 
-        $detalle->delete();
-    }
+            $presentacion = Presentacion::find(
+                $detalle->id_presentacion
+            );
 
-    $pedido->delete();
+            $presentacion->increment(
+                'cantidad_caja',
+                $detalle->cantidad / $presentacion->cantidad_unitaria
+            );
+        }
 
-    return redirect()
-        ->route('pedidos.index')
-        ->with('success', 'Pedido eliminado correctamente.');
-    }
+        Cliente::where(
+            'id_cliente',
+            $pedido->id_cliente
+        )->decrement('num_pedidos');
+
+        $pedido->estado = 'cancelado';
+        $pedido->save();
+
+        return redirect()
+            ->route('pedidos.index')
+            ->with('success', 'Pedido cancelado correctamente.');
+        }
 }

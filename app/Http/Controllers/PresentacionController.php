@@ -87,8 +87,11 @@ class PresentacionController extends Controller
      */
     public function destroy(Presentacion $presentacion)
     {
-        $presentacion->delete();
-        
-        return redirect()->route('presentaciones.index')->with('success', 'Presentación eliminada exitosamente.');
+        $presentacion->estado='inactivo';
+        $presentacion->save();
+
+        return redirect()
+        ->route('presentaciones.index')
+        ->with('success', 'Presentacion eliminado exitosamente.');
     }
 }

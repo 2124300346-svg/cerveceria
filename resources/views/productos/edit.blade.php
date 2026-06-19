@@ -22,7 +22,7 @@
 
         @endif
 
-            <form action="{{ route('productos.update', $producto->id_producto) }}" method="POST" class="max-w-md mx-auto">
+            <form action="{{ route('productos.update', $producto->id_producto) }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto">
                 @csrf
                 @method('PUT')
 

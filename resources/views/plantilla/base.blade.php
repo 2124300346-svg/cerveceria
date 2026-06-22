@@ -20,7 +20,7 @@
             <div class="flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
                 <a href="#"
                     class="text-heading bg-neutral-primary box-border border border-transparent hover:bg-neutral-secondary-medium focus:ring-4 focus:ring-neutral-tertiary-soft font-medium leading-5 rounded-base text-sm px-3 py-2 focus:outline-none">Login</a>
-                <a href="#"
+                <a href="/login"
                     class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5">Sign
                     Up</a>
                 <button data-collapse-toggle="mega-menu" type="button"
@@ -64,32 +64,48 @@
         </div>
     </nav>
 
-    <div class="bg-neutral-secondary-soft py-4">
-        <div class="max-w-screen-xl mx-auto px-4">
+    <div class="bg-neutral-secundary-soft border-b shadow-sm">
+        <div class="max-w-screen-xl mx-auto px-4 py-2 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-sm">
 
-            <div>
-                <h3 class="font-bold text-blue-800">Ubicacion</h3>
-                <p id="ciudad">Ciudad: Cargando...</p>
-                <p id="estado">Estado: Cargando...</p>
-                <p id="pais">País: Cargando...</p>
+            <div class="flex gap-6">
+                <div>
+                    <span class="font-bold text-blue-800">Ubicación</span>
+                    <span id="ciudad">Cargando...</span>
+                </div>
+
+                <div>
+                    <span class="font-bold text-blue-800">Estado: </span>
+                    <span id="estado">Cargando...</span>
+                </div>
+
+                <div>
+                    <span class="font-bold text-blue-800">País: </span>
+                    <span id="pais">Cargando...</span>
+                </div>
             </div>
-            
 
-            <div>
-                <h3 class="font-bold text-blue-800">Clima</h3>
-                <p id="temperatura">Temperatura: Cargando...</p>
-                <p id="humedad">Humedad: Cargando...</p>
-                <p id="lluvia">Condicion: Cargando...</p>
+            <div class="flex gap-6">
+                <div>
+                    <span class="font-bold text-yellow-700">Temperatura</span>
+                    <span id="temperatura">Cargando...</span>
+                </div>
+
+                <div>
+                    <span class="font-bold text-yellow-700">Humedad</span>
+                    <span id="humedad">Cargando...</span>
+                </div>
+
+                <div>
+                    <span class="font-bold text-yellow-700">Lluvia</span>
+                    <span id="lluvia">Cargando...</span>
+                </div>
             </div>
-
             <div>
-                <h3 class="font-bold text-yellow-800">Tipo de cambio</h3>
-                <p id=dolar>1 USD = Cargando...</p>
+                <span class="font-bold text-green-700">Peso a Dolar</span>
+                <span id="dolar">Cargando...</span>
             </div>
         </div>
     </div>
-
-    <main>
         @yield('content')
     </main>
 

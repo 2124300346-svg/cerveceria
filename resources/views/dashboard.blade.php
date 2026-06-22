@@ -1,6 +1,10 @@
 @extends('/plantilla/base')
 
 @section('content')
+<p>
+    Bienvenido, {{ $administrador->nombre }}
+</p>
+
    <section class="bg-white light:bg-gray-900">
     <div class="flex justify-center items-center my-8">
     <img src="{{ asset('imagenes/logo_grupo_modelo_2.png') }}" class="h-20 w-auto" alt="Logo Grupo Modelo" />

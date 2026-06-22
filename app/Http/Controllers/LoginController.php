@@ -25,6 +25,23 @@ class LoginController extends Controller
         ];
 
         if (Auth::guard('admin')->attempt($credentials)) {
+
+            $request->session()->regenerate();
+
+            $admin = Auth::guard('admin')->user();
+
+            if (!$admin || !$admin->activo) {
+                Auth::guard('admin')->logout();
+
+                return back()->withErrors([
+                    'login' => 'Usuario desactivado'
+                ]);
+            }
+
+            return redirect('/dashboard');
+        }
+
+        if (Auth::guard('admin')->attempt($credentials)) {
             $request->session()->regenerate();
             return redirect('/dashboard');
         }

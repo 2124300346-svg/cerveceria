@@ -59,6 +59,14 @@
                             Pedidos
                         </a>
                     </li>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+
+                        <button type="submit"
+                            class="text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded">
+                            Cerrar sesión
+                        </button>
+                    </form>
                 </ul>
             </div>
         </div>

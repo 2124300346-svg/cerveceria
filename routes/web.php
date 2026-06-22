@@ -31,5 +31,6 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::resource('/pedidos', PedidoController::class);
     Route::resource('/administradores', AdministradorController::class);
 
-    Route::post('/logout', [LoginController::class, 'logout']);
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 });

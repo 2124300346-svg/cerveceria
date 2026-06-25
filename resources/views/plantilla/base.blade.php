@@ -72,48 +72,32 @@
         </div>
     </nav>
 
-    <div class="bg-neutral-secundary-soft border-b shadow-sm">
-        <div class="max-w-screen-xl mx-auto px-4 py-2 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-sm">
-
-            <div class="flex gap-6">
-                <div>
-                    <span class="font-bold text-blue-800">Ubicación</span>
-                    <span id="ciudad">Cargando...</span>
-                </div>
-
-                <div>
-                    <span class="font-bold text-blue-800">Estado: </span>
-                    <span id="estado">Cargando...</span>
-                </div>
-
-                <div>
-                    <span class="font-bold text-blue-800">País: </span>
-                    <span id="pais">Cargando...</span>
-                </div>
-            </div>
-
-            <div class="flex gap-6">
-                <div>
-                    <span class="font-bold text-yellow-700">Temperatura</span>
-                    <span id="temperatura">Cargando...</span>
-                </div>
-
-                <div>
-                    <span class="font-bold text-yellow-700">Humedad</span>
-                    <span id="humedad">Cargando...</span>
-                </div>
-
-                <div>
-                    <span class="font-bold text-yellow-700">Lluvia</span>
-                    <span id="lluvia">Cargando...</span>
-                </div>
-            </div>
-            <div>
-                <span class="font-bold text-green-700">Peso a Dolar</span>
-                <span id="dolar">Cargando...</span>
-            </div>
-        </div>
+   <div class="bg-neutral-secundary-soft border-b shadow-sm">
+  <div class="max-w-screen-xl mx-auto px-4 py-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+    <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+      <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Ubicación</p>
+      <div class="mt-3 space-y-2 text-sm text-slate-700">
+        <p><span class="font-semibold text-slate-900">Ciudad:</span> <span id="ciudad">Cargando...</span></p>
+        <p><span class="font-semibold text-slate-900">Estado:</span> <span id="estado">Cargando...</span></p>
+        <p><span class="font-semibold text-slate-900">País:</span> <span id="pais">Cargando...</span></p>
+      </div>
     </div>
+
+    <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+      <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Clima</p>
+      <div class="mt-3 space-y-2 text-sm text-slate-700">
+        <p><span class="font-semibold text-slate-900">Temperatura:</span> <span id="temperatura">Cargando...</span></p>
+        <p><span class="font-semibold text-slate-900">Humedad:</span> <span id="humedad">Cargando...</span></p>
+        <p><span class="font-semibold text-slate-900">Lluvia:</span> <span id="lluvia">Cargando...</span></p>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+      <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Peso a Dólar</p>
+      <p id="dolar" class="mt-4 text-2xl font-semibold text-emerald-700">Cargando...</p>
+    </div>
+  </div>
+</div>
         @yield('content')
     </main>
 

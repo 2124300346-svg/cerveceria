@@ -51,13 +51,32 @@
 
                 <button
                     type="submit"
-                    class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 rounded-lg transition">
+                    class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 rounded-lg transition mb-4">
 
                     Iniciar sesión
                 </button>
-                
 
             </form>
+
+            <!-- Divider -->
+            <div class="flex items-center my-4">
+                <hr class="flex-1 border-gray-300">
+                <span class="px-3 text-gray-400 text-sm">o</span>
+                <hr class="flex-1 border-gray-300">
+            </div>
+
+            <!-- GitHub Login -->
+            <a
+                href="{{ route('auth.redirection', 'github') }}"
+                class="flex items-center justify-center gap-3 w-full border border-gray-300 rounded-lg py-3 hover:bg-gray-50 transition">
+
+                <img src="{{ asset('imagenes/github.svg') }}" class="w-6 h-6" alt="GitHub">
+
+                <span class="font-medium text-gray-700">
+                    Iniciar sesión con GitHub
+                </span>
+
+            </a>
 
         </div>
 

@@ -10,11 +10,22 @@ use App\Http\Controllers\PresentacionController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SocialiteController;
+
+Route::get('/test-config', function () {
+    dd(config('services.github'));
+});
+
 
 Route::get('/', function () {
     return auth('admin')->check()
         ? redirect('/dashboard')
         : redirect('/login');
+});
+
+Route::controller(SocialiteController::class)->group(function () {
+Route::get('auth/redirection/{provider}', 'authProviderRedirect')->name('auth.redirection');
+Route::get('auth/{provider}/callback', 'socialAuthentication')->name('auth.callback');
 });
 
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
@@ -32,5 +43,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::resource('/administradores', AdministradorController::class);
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+    
 
 });

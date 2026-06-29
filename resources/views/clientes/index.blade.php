@@ -2,6 +2,12 @@
 
 @section('content')
 
+@php
+    $puesto = session('puesto');
+@endphp
+
+@if($puesto == 'administrador')
+
     <div class="container mx-auto px-4 py-8">
         <h2 class="text-2xl font-semibold mb-6">Crear nuevo cliente</h2> 
 
@@ -12,8 +18,8 @@
               text-center leading-5">
         Nuevo Cliente
     </a>
-
-    <div class="grid md:grid-cols-2 md:gap-6">
+@endif
+    <div class="grid md:grid-cols-2 md:gap-6 ">
         <div class="relative z-0 w-full mb-5 group">
         <table class="w-full text-sm text-left text-gray-700 mt-10 border-t border-gray-300">
             <thead class="bg-gray-100 border-b border-gray-300">
@@ -28,7 +34,9 @@
                     <th scope="col" class="px-6 py-3">Correo electrónico</th>
                     <th scope="col" class="px-6 py-3">Fecha de nacimiento</th>
                     <th scope="col" class="px-6 py-3">Numero de pedidos</th>
-                    <th scope="col" class="px-6 py-3">Acciones</th>
+                    @if( $puesto == 'administrador')
+                        <th scope="col" class="px-6 py-3">Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +54,7 @@
                     <td class="px-6 py-4">{{ $cliente->correo }}</td>
                     <td class="px-6 py-4">{{ $cliente->fecha_Nac }}</td>
                     <td class="px-6 py-4">{{ $cliente->Num_pedidos }}</td>
+                    @if($puesto =='administrador')
                     <td class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
                         <a href="{{ url('clientes/' .$cliente->id_cliente.'/edit') }}">Editar </a></td>
                     </td>
@@ -55,6 +64,8 @@
                             @csrf
                             <button type="submit">Eliminar</button>
                         </form>
+                    </td>
+                    @endif
                 @endforeach
             </tbody>
         </table>

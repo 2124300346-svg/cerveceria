@@ -1,9 +1,8 @@
 @extends('/plantilla/base')
 
 @section('content')
-<p>
-    Bienvenido, {{ $administrador->nombre }}
-</p>
+<h1> Bienvenido {{$usuario['nombre']}}</h1>
+
 
    <section class="bg-white light:bg-gray-900">
     <div class="flex justify-center items-center my-8">

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Administrador;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Usuario;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -20,19 +19,36 @@ class SocialiteController extends Controller
             ->stateless()
             ->user();
 
-        $admin = Administrador::where('usuario', $socialUser->nickname)->first();
+        $user = Usuario::where('correo', $socialUser->getEmail())->first();
 
-        if (!$admin) {
-            $admin = Administrador::create([
-                'nombre' => $socialUser->name ?? $socialUser->nickname,
-                'usuario' => $socialUser->email,
-                'contraseña' => Hash::make('Password1234'),
-                'activo' => 1,
+        if (!$user) {
+            $user = Usuario::create([
+                'nombre_usuario' => $socialUser->getName() ?? $socialUser->getNickname(),
+                'correo' => $socialUser->getEmail(),
+                'contrasena' => '',
+                'estado' => 'activo',
+                'puesto' => 'usuario',
+                'img1_usu' => $socialUser->getAvatar()
             ]);
         }
 
-        Auth::login($admin);
+        if ($user->estado !== 'activo') {
+            return redirect('/login');
+        }
 
-        return redirect('/dashboard');
+        session([
+            'user_id' => $user->id_usuario,
+            'nombre' => $user->nombre_usuario,
+            'correo' => $user->correo,
+            'puesto' => $user->puesto,
+            'img' => $user->img1_usu,
+            'auth_type' => $provider
+        ]);
+
+        return match ($user->puesto) {
+            'administrador' => redirect('/dashboard'),
+            'distribuidor' => redirect('/dashboard'),
+            'usuario' => redirect('/dashboard'),
+        };
     }
 }

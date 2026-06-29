@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $administrador = Auth::guard('admin')->user();
-
-        if (!$administrador) {
+        if (!session()->has('user_id')) {
             return redirect('/login');
         }
 
-        return view('/dashboard', compact('administrador'));
+        $usuario = [
+            'id' => session('user_id'),
+            'nombre' => session('nombre'),
+            'correo' => session('correo'),
+            'puesto' => session('puesto'),
+            'img' => session('img'),
+        ];
+
+        return view('dashboard', compact('usuario'));
     }
 }

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Usuario;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -11,53 +12,87 @@ class LoginController extends Controller
     {
         return view('auth.login');
     }
-
     public function login(Request $request)
     {
         $request->validate([
-            'usuario' => 'required',
+            'correo' => 'required|email',
             'contrasena' => 'required'
         ]);
 
-        $credentials = [
-            'usuario' => $request->usuario,
-            'password' => $request->contrasena
-        ];
+        $user = Usuario::where('correo', $request->correo)->first();
 
-        if (Auth::guard('admin')->attempt($credentials)) {
-
-            $request->session()->regenerate();
-
-            $admin = Auth::guard('admin')->user();
-
-            if (!$admin || !$admin->activo) {
-                Auth::guard('admin')->logout();
-
-                return back()->withErrors([
-                    'login' => 'Usuario desactivado'
-                ]);
-            }
-
-            return redirect('/dashboard');
+        if (!$user) {
+            return back()->withErrors(['correo' => 'Usuario no encontrado']);
         }
 
-        if (Auth::guard('admin')->attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect('/dashboard');
+        if ($user->estado !== 'activo') {
+            return back()->withErrors(['correo' => 'Usuario inactivo']);
         }
 
-        return back()->withErrors([
-            'login' => 'Usuario o contraseña incorrectos'
+        if ($user->contrasena !== $request->contrasena) {
+            return back()->withErrors(['contrasena' => 'Contraseña incorrecta']);
+        }
+
+        session([
+            'user_id' => $user->id_usuario,
+            'nombre' => $user->nombre_usuario,
+            'correo' => $user->correo,
+            'puesto' => $user->puesto,
+            'img' => $user->img1_usu,
+            'auth_type' => 'local'
         ]);
+
+        return redirect ('/dashboard');
+    }
+    public function githubRedirect()
+    {
+        return Socialite::driver('github')->redirect();
     }
 
-    public function logout(Request $request)
+    public function githubCallback()
     {
-        Auth::logout();
+        $githubUser = Socialite::driver('github')->user();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $user = Usuario::where('correo', $githubUser->getEmail())->first();
 
+        if (!$user) {
+            $user = Usuario::create([
+                'nombre_usuario' => $githubUser->getNickname() ?? $githubUser->getName(),
+                'correo' => $githubUser->getEmail(),
+                'contrasena' => '',
+                'estado' => 'activo',
+                'puesto' => 'usuario',
+                'img1_usu' => $githubUser->getAvatar()
+            ]);
+        }
+
+        if ($user->estado !== 'activo') {
+            return redirect('/login');
+        }
+
+        session([
+            'user_id' => $user->id_usuario,
+            'nombre' => $user->nombre_usuario,
+            'puesto' => $user->puesto,
+            'img' => $user->img1_usu,
+            'auth_type' => 'github'
+        ]);
+
+        switch ($user->puesto) {
+            case 'administrador':
+                return redirect('/dashboard');
+
+            case 'distribuidor':
+                return redirect('/dashboard');
+
+            default:
+                return redirect('/dashboard');
+        }
+    }
+
+    public function logout()
+    {
+        session()->flush();
         return redirect('/login');
     }
 }
